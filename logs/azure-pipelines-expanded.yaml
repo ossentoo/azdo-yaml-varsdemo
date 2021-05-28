@@ -1,0 +1,38 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+trigger:
+  branches:
+    include:
+    - feature/private-agent
+    - main
+variables:
+- name: pool
+  value: default_windows
+- name: system.debug
+  value: 'true'
+stages:
+- stage: DEMO
+  displayName: Demo
+  variables:
+  - name: applicationsList
+    value: app1,app2,app3
+  jobs:
+  - deployment: OutputVars
+    displayName: Output the variables
+    pool:
+      name: $(pool)
+    environment:
+      name: DEMO
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: output the variables
+            inputs:
+              targetType: inline
+              script: >2
+
+                Write-Host "Output the applications - $(applicationsList)"
+
+                Write-Host "Output the tag output list - app2"
+
