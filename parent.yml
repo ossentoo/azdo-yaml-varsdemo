@@ -3,7 +3,7 @@ trigger:
 - feature/os/varsdemo
 
 variables:
-  image: windows-latest
+  pool: default_windows
 
 stages:
 - stage: DEMO

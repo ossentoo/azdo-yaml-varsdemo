@@ -5,7 +5,8 @@ jobs:
 - deployment: OutputVars
   displayName: Output the variables
   pool:
-    vmImage: $(image)
+    name: $(pool)
+    # vmImage: $(image)
   environment: DEMO
   strategy:
     runOnce:
@@ -25,7 +26,8 @@ jobs:
       displayName: 'Apply ${{ folder }}'
       timeoutInMinutes: 480
       pool:
-        name: $(image)
+        name: $(pool)      
+        # name: $(image)
       environment: DEMO
       strategy:
         runOnce:
