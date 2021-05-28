@@ -1,0 +1,40 @@
+parameters:
+  applicationsToExclude: ''
+  folders: []
+jobs:
+- deployment: OutputVars
+  displayName: Output the variables
+  pool:
+    vmImage: $(image)
+  environment: DEMO
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - powershell: |
+
+            Write-Host "Output the applications - $(applicationsList)"
+            Write-Host "Output the tag output list - ${{parameters.applicationsToExclude}}"
+
+          displayName: output the variables
+
+- ${{ each folder in parameters.folders }}:
+  # - ${{ if and(contains(variables['applicationsList'], folder), not(contains(parameters.applicationsToExclude, folder))) }}:
+  - ${{ if contains(variables['applicationsList'], folder) }}:
+    - deployment: ${{replace( folder ,'-','_')}}
+      displayName: 'Apply ${{ folder }}'
+      timeoutInMinutes: 480
+      pool:
+        name: $(image)
+      environment: DEMO
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - powershell: |
+
+                Write-Host "Output the workorder1 - $env:applicationsList"
+                Write-Host "Output the workorder2 - $(applicationsList)"
+                Write-Host "Output the folder - ${{folder}}"
+              displayName: output the variables

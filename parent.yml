@@ -1,0 +1,17 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+trigger:
+- feature/os/varsdemo
+
+variables:
+  image: windows-latest
+
+stages:
+- stage: DEMO
+  displayName: Demo
+  variables:
+    applicationsList: app1,app2,app3
+  jobs:
+  - template: child.yml
+    parameters:
+      applicationsToExclude: app2
+      folders: ['app1','app2','app3']
