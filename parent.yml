@@ -1,9 +1,11 @@
 name: $(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
 trigger:
-- feature/os/varsdemo
+- feature/private-agent
+- main
 
 variables:
   pool: default_windows
+  system.debug: 'true'
 
 stages:
 - stage: DEMO
